@@ -9,6 +9,8 @@
 - Extras aren't selling alone (must be with a coffee).
 - The product values can be in a properties file, but i handled like class constants for simplicity.
 - Maybe is posible give some structure for the input in order to proccess better. I prefer left it like the example
+- if the fifth beverage has an extra, the free beverage reward includes the extra value.
+- The extra discounts are applied in the requested order
 
 # Install
 
@@ -37,12 +39,12 @@ The extras are:
  - special roast
 
 if a coffee has an extra, it must specified as the following structure 
-<coffee> with <extra>
+$coffee with $extra
 Example: "Large Coffee with foamed milk"
   
 The structure for the param is as follow:
 
-"<CustomerName> : <product> , <product> ; <CustomerName> : <product> ; <CustomerName> , <product>"
+"$CustomerName : $product , $product ; $CustomerName : $product ; $CustomerName , $product"
 
 Example:
 
