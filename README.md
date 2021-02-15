@@ -17,7 +17,9 @@
 1. Download the maven project. You can use the command "git clone https://github.com/jtchira/CharlenesCoffeeCorner.git"
 2. Install the project executing the command "mvn install" in the folder donwloaded (must be a .pom file). It generates a jar file in the folder specified for    your local maven installation. In my case is /home/jorge/.m2/repository/charlenes-coffee-corner/charlenes-coffee-corner/0.0.1-SNAPSHOT.
 3. Once installed with maven, in the installation folder a jar file is generated. Run de program with the command java charlenes-coffee-corner-0.0.1-SNAPSHOT and pass the agument parameter with the order request.
+
 Example: 
+
 java charlenes-coffee-corner-0.0.1-SNAPSHOT "Jorge : Small coffee with foamed milk , Medium Coffee , Large Coffee With Special Roast , Bacon Roll , orange juice ; Diego : orange juice ; Jorge : orange juice , Medium Coffee , Medium Coffee , Medium Coffee , Medium Coffee , Large Coffee"
 
 
