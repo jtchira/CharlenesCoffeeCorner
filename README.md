@@ -14,11 +14,51 @@
 
 # Install
 
-1. Download the maven project.
-2. Install the project with the command.
-3. Run de program with the command and pass the agument parameter with the order request.
+1. Download the maven project. You can use the command "git clone https://github.com/jtchira/CharlenesCoffeeCorner.git"
+2. Install the project executing the command "mvn install" in the folder donwloaded (must be a .pom file). It generates a jar file in the folder specified for    your local maven installation. In my case is /home/jorge/.m2/repository/charlenes-coffee-corner/charlenes-coffee-corner/0.0.1-SNAPSHOT.
+3. Once installed with maven, in the installation folder a jar file is generated. Run de program with the command:
 
-# Run
+java -jar charlenes-coffee-corner-0.0.1-SNAPSHOT "$request" where $request represent the argument parameter with the order request.
+
+Example request: 
+
+java -jar charlenes-coffee-corner-0.0.1-SNAPSHOT.jar "Jorge : Small coffee with foamed milk , Medium Coffee , Large Coffee With Special Roast , Bacon Roll , orange juice ; Diego : orange juice ; Jorge : orange juice , Medium Coffee , Medium Coffee , Medium Coffee , Medium Coffee , Large Coffee"
+
+If the request structure isnt the right the response is:
+Bad Request
+
+
+Example response ok:
+
+********* Customer name    jorge  ************
+small coffee  3.0
+medium coffee  3.0
+large coffee  4.4
+bacon roll  4.5
+orange juice  3.95
+total products    18.85
+total discount    1.4
+total to pay      17.450000000000003
+**********************************************
+********* Customer name    diego  ************
+orange juice  3.95
+total products    3.95
+total discount    0.0
+total to pay      3.95
+**********************************************
+********* Customer name    jorge  ************
+orange juice  3.95
+medium coffee  3.0
+medium coffee  3.0
+medium coffee  3.0
+medium coffee  3.0
+large coffee  3.5
+total products    19.45
+total discount    7.45
+total to pay      12.0
+**********************************************
+
+
 
 # Request structure
 
