@@ -83,6 +83,15 @@ public class Order {
 				? products.stream().filter(p -> p instanceof Coffee || p instanceof Juice).collect(Collectors.toList())
 				: new ArrayList<Product>();
 	}
+	
+	/**
+	 * This method get all the snacks in the order.
+	 */
+	public List<Product> getSnacks() {
+		return products != null
+				? products.stream().filter(p -> p instanceof Snack).collect(Collectors.toList())
+				: new ArrayList<Product>();
+	}
 
 	/**
 	 * This calculate the value with the discount applied.

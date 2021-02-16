@@ -13,6 +13,7 @@ import com.ccc.service.CoffeeShopService;
 
 public class CoffeeShopServiceTest {
 	
+	
 	private static Order order;
 
 	@BeforeEach
@@ -82,7 +83,58 @@ public class CoffeeShopServiceTest {
 		
 		assertEquals(CoffeeShopService.getMenuDiscount(order, 1), Util.ADD_MILK_VALUE); 
 	}
-
-
-
+	
+	/**
+	 * Test to evaluate the total value (with discounts) 
+	 */
+	@Test
+	public void orderValueTest() {
+		double result = Util.SMALL_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE + Util.LARGE_COFFEE_VALUE + Util.ORANCE_JUICE_VALUE;
+		Order orderCreated = CoffeeShopService.createOrder("alex", "small coffee , medium coffee , large coffee , orange juice , small coffee");
+		orderCreated.getTotalProducts();
+		orderCreated.getTotalDiscounts();
+		assertEquals(result, orderCreated.calculateTotalOrder());
+	}
+	
+	/**
+	 * Test to evaluate the total value (with discounts) 
+	 */
+	@Test
+	public void orderValueTest1() {
+		double result = Util.SMALL_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE + Util.LARGE_COFFEE_VALUE + Util.ORANCE_JUICE_VALUE + Util.BACON_ROLL_VALUE;
+		Order orderCreated = CoffeeShopService.createOrder("diego", "small coffee , medium coffee , large coffee , orange juice , small coffee , bacon roll");
+		orderCreated.getTotalProducts();
+		orderCreated.getTotalDiscounts();
+		assertEquals(result, orderCreated.calculateTotalOrder());
+	}
+	
+	/**
+	 * Test to evaluate the total value (with discounts) 
+	 */
+	@Test
+	public void orderValueTest2() {
+		double result = Util.SMALL_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE + Util.LARGE_COFFEE_VALUE + Util.ORANCE_JUICE_VALUE + Util.SMALL_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE + Util.LARGE_COFFEE_VALUE + Util.ORANCE_JUICE_VALUE ;
+		Order orderCreated = CoffeeShopService.createOrder("brayan", "small coffee , medium coffee , large coffee , orange juice , orange juice , small coffee , medium coffee , large coffee , orange juice , orange juice");
+		orderCreated.getTotalProducts();
+		orderCreated.getTotalDiscounts();
+		assertEquals(result, orderCreated.calculateTotalOrder());
+	}
+	
+	/**
+	 * Test to evaluate the total value (with discounts) 
+	 */
+	@Test
+	public void orderValueTest3() {
+		double result1 = Util.SMALL_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE + Util.MEDIUM_COFFEE_VALUE;
+		Order orderCreated1 = CoffeeShopService.createOrder("carlos", "small coffee , medium coffee , medium coffee");
+		orderCreated1.getTotalProducts();
+		orderCreated1.getTotalDiscounts();
+		assertEquals(result1, orderCreated1.calculateTotalOrder());
+		
+		double result2 = Util.SMALL_COFFEE_VALUE + Util.LARGE_COFFEE_VALUE;
+		Order orderCreated2 = CoffeeShopService.createOrder("carlos", "small coffee , medium coffee , large coffee");
+		orderCreated2.getTotalProducts();
+		orderCreated2.getTotalDiscounts();
+		assertEquals(result2, orderCreated2.calculateTotalOrder());
+	}
 }

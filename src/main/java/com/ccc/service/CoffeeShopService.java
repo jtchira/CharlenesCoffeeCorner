@@ -5,84 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ccc.entity.Coffee;
 import com.ccc.entity.Customer;
 import com.ccc.entity.Extra;
-import com.ccc.entity.Juice;
 import com.ccc.entity.Order;
 import com.ccc.entity.Product;
-import com.ccc.entity.Snack;
 
 /**
  * @author jorge Class that has all the service that the coffee shop need
  */
 public class CoffeeShopService {
 
-	/**
-	 * Constants to split the different request parts
-	 */
-	public static final String PRODUCT_SPLIT = " , ";
-	public static final String EXTRA_SPLIT = " with ";
-	public static final String CUSTOMER_SPLIT = " : ";
-	public static final String ORDER_SPLIT = " ; ";
-	public static final String EMPTY = "";
 
-	public static final String BAD_REQUEST = "Bad Request";
-
-	/**
-	 * Constants with the different product values
-	 */
-	public static final double SMALL_COFFEE_VALUE = 2.50;
-	public static final double MEDIUM_COFFEE_VALUE = 3.00;
-	public static final double LARGE_COFFEE_VALUE = 3.50;
-	public static final double BACON_ROLL_VALUE = 4.50;
-	public static final double ORANCE_JUICE_VALUE = 3.95;
-	public static final double ADD_MILK_VALUE = 0.30;
-	public static final double ADD_FOAMED_MILK_VALUE = 0.50;
-	public static final double ADD_SPECIAL_ROAST_VALUE = 0.90;
-
-	/**
-	 * Constants with the different product names
-	 */
-	public static final String SMALL_COFFEE = "small coffee";
-	public static final String MEDIUM_COFFEE = "medium coffee";
-	public static final String LARGE_COFFEE = "large coffee";
-	public static final String BACON_ROLL = "bacon roll";
-	public static final String ORANCE_JUICE = "orange juice";
-	public static final String ADD_MILK = "milk";
-	public static final String ADD_FOAMED_MILK = "foamed milk";
-	public static final String ADD_SPECIAL_ROAST = "special roast";
-	public static final String SMALL_COFFEE_MILK = "small coffee with milk";
-	public static final String SMALL_COFFEE_FOAMED = "small coffee with foamed milk";
-	public static final String SMALL_COFFEE_SPECIAL = "small coffee with special roast";
-	public static final String MEDIUM_COFFEE_MILK = "medium coffee with milk";
-	public static final String MEDIUM_COFFEE_FOAMED = "medium coffee with foamed milk";
-	public static final String MEDIUM_COFFEE_SPECIAL = "medium coffee with special roast";
-	public static final String LARGE_COFFEE_MILK = "large coffee with milk";
-	public static final String LARGE_COFFEE_FOAMED = "large coffee with foamed milk";
-	public static final String LARGE_COFFEE_SPECIAL = "large coffee with special roast";
 
 	/**
 	 * List with customers orders from the fifth beverage reward program
 	 */
-	private static Map<String, Customer> customers = new HashMap<String, Customer>();;
-
-	public static void main(String args[]) {
-		
-		String orders[] = args[0].split(ORDER_SPLIT);
-		if (args[0] == null || args[0] != null && EMPTY.equals(args[0].trim())) {
-			System.out.println(BAD_REQUEST);
-		} else {
-			for (String order : orders) {
-				String orderDetails[] = order.split(CUSTOMER_SPLIT);
-				if (orderDetails.length == 2) {
-					printReceipt(createOrder(orderDetails[0].toLowerCase(), orderDetails[1].toLowerCase()));
-				} else {
-					System.out.println(BAD_REQUEST);
-				}
-			}
-		}
-	}
+	private static Map<String, Customer> customers = new HashMap<String, Customer>();
 
 	/**
 	 * Method that process the customer request
@@ -90,64 +28,29 @@ public class CoffeeShopService {
 	public static Order createOrder(String customerName, String pedido) {
 		Order order = new Order();
 		List<Product> orderProducts = new ArrayList<Product>();
-		String[] products = pedido.split(PRODUCT_SPLIT);
-		int countBeverage = 0;
-		int countSnack = 0;
+		String[] products = pedido.split(Util.PRODUCT_SPLIT);
+		
 		for (String productName : products) {
 
 			productName = productName.trim();
-			String extraName = productName.contains(EXTRA_SPLIT)
-					? productName.substring(productName.indexOf(EXTRA_SPLIT) + EXTRA_SPLIT.length())
-					: EMPTY;
-			productName = productName.contains(EXTRA_SPLIT) ? productName.substring(0, productName.indexOf(EXTRA_SPLIT))
+			String extraName = productName.contains(Util.EXTRA_SPLIT)
+					? productName.substring(productName.indexOf(Util.EXTRA_SPLIT) + Util.EXTRA_SPLIT.length())
+					: Util.EMPTY;
+			productName = productName.contains(Util.EXTRA_SPLIT) ? productName.substring(0, productName.indexOf(Util.EXTRA_SPLIT))
 					: productName;
-			Extra extra = null;
 
-			switch (extraName) {
-			case ADD_MILK:
-				extra = new Extra(ADD_MILK, ADD_MILK_VALUE);
-				break;
-			case ADD_FOAMED_MILK:
-				extra = new Extra(ADD_FOAMED_MILK, ADD_FOAMED_MILK_VALUE);
-				break;
-			case ADD_SPECIAL_ROAST:
-				extra = new Extra(ADD_SPECIAL_ROAST, ADD_SPECIAL_ROAST_VALUE);
-				break;
-			}
+			try {
+				Extra extra = null;
+				if (!Util.EMPTY.equals(extraName)) {
+					ExtraItem extraItem = ExtraItem.valueOf(extraName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
+					extra = extraItem.createExtra();
+				}
 
-			Coffee coffee = null;
-
-			switch (productName) {
-			case SMALL_COFFEE:
-				coffee = new Coffee(productName, SMALL_COFFEE_VALUE);
-				coffee.setExtra(extra);
-				orderProducts.add(coffee);
-				countBeverage += 1;
-				break;
-			case MEDIUM_COFFEE:
-				coffee = new Coffee(productName, MEDIUM_COFFEE_VALUE);
-				coffee.setExtra(extra);
-				orderProducts.add(coffee);
-				countBeverage += 1;
-				break;
-			case LARGE_COFFEE:
-				coffee = new Coffee(productName, LARGE_COFFEE_VALUE);
-				coffee.setExtra(extra);
-				orderProducts.add(coffee);
-				countBeverage += 1;
-				break;
-			case BACON_ROLL:
-				Snack snack = new Snack(productName, BACON_ROLL_VALUE);
-				orderProducts.add(snack);
-				countSnack += 1;
-				break;
-			case ORANCE_JUICE:
-				Juice juice = new Juice(productName, ORANCE_JUICE_VALUE);
-				orderProducts.add(juice);
-				countBeverage += 1;
-				break;
-			default:
-				return null;
+				ProductItem productItem = ProductItem.valueOf(productName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
+				productItem.createProduct(extra, orderProducts);
+			} catch (IllegalArgumentException e) {
+				System.out.println(Util.BAD_REQUEST);
+				System.out.println(e);
 			}
 
 		}
@@ -158,8 +61,10 @@ public class CoffeeShopService {
 		}
 		order.setProducts(orderProducts);
 
-		order.setTotalDiscounts(getMenuDiscount(order, countSnack <= countBeverage ? countSnack : countBeverage)
-				+ getFifthDiscount(customer, order, countBeverage));
+		int beverages = order.getBeverages().size();
+		int snacks = order.getBeverages().size();
+		order.setTotalDiscounts(getMenuDiscount(order, snacks <= beverages ? snacks : beverages)
+				+ getFifthDiscount(customer, order, beverages));
 
 		customers.put(customerName, customer);
 		order.setCustomerName(customerName);
@@ -213,7 +118,7 @@ public class CoffeeShopService {
 			System.out.println("total to pay      " + order.calculateTotalOrder());
 			System.out.println("**********************************************");
 		} else {
-			System.out.println(BAD_REQUEST);
+			System.out.println(Util.BAD_REQUEST);
 		}
 	}
 }
