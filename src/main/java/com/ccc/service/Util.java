@@ -25,5 +25,17 @@ public class Util {
 	 * Bad request message response
 	 */
 	public static final String BAD_REQUEST = "Bad Request";
+	
+	
+	/**
+	 * Print receipt constants
+	 */
+	
+	public static final String TOTAL_PRODUCTS = "Total Products : ";
+	public static final String TOTAL_DISCOUNT = "Total Discount : ";
+	public static final String TOTAL_TO_PAY   = "Total to Pay : ";
+	public static final String CUSTOMER_NAME  = "Customer Name : ";
+	public static final String LINE_BREAK = "\n";
+	public static final String ORDER_SEPARATOR = "****************************************";
 
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ccc.entity.Coffee;
 import com.ccc.entity.Customer;
 import com.ccc.entity.Extra;
 import com.ccc.entity.Order;
@@ -14,8 +15,6 @@ import com.ccc.entity.Product;
  * @author jorge Class that has all the service that the coffee shop need
  */
 public class CoffeeShopService {
-
-
 
 	/**
 	 * List with customers orders from the fifth beverage reward program
@@ -29,24 +28,27 @@ public class CoffeeShopService {
 		Order order = new Order();
 		List<Product> orderProducts = new ArrayList<Product>();
 		String[] products = pedido.split(Util.PRODUCT_SPLIT);
-		
+
 		for (String productName : products) {
 
 			productName = productName.trim();
 			String extraName = productName.contains(Util.EXTRA_SPLIT)
 					? productName.substring(productName.indexOf(Util.EXTRA_SPLIT) + Util.EXTRA_SPLIT.length())
 					: Util.EMPTY;
-			productName = productName.contains(Util.EXTRA_SPLIT) ? productName.substring(0, productName.indexOf(Util.EXTRA_SPLIT))
+			productName = productName.contains(Util.EXTRA_SPLIT)
+					? productName.substring(0, productName.indexOf(Util.EXTRA_SPLIT))
 					: productName;
 
 			try {
 				Extra extra = null;
 				if (!Util.EMPTY.equals(extraName)) {
-					ExtraItem extraItem = ExtraItem.valueOf(extraName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
+					ExtraItem extraItem = ExtraItem
+							.valueOf(extraName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
 					extra = extraItem.createExtra();
 				}
 
-				ProductItem productItem = ProductItem.valueOf(productName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
+				ProductItem productItem = ProductItem
+						.valueOf(productName.toUpperCase().replace(Util.SPACE, Util.UNDERSCORE));
 				productItem.createProduct(extra, orderProducts);
 			} catch (IllegalArgumentException e) {
 				System.out.println(Util.BAD_REQUEST);
@@ -109,14 +111,29 @@ public class CoffeeShopService {
 	 */
 	public static void printReceipt(Order order) {
 		if (order != null) {
-			System.out.println("********* Customer name    " + order.getCustomerName() + "  ************");
+
+			StringBuilder response = new StringBuilder();
+
+			response.append(Util.ORDER_SEPARATOR);
+			response.append(Util.LINE_BREAK);
+			response.append(Util.CUSTOMER_NAME + order.getCustomerName() + Util.LINE_BREAK);
+
 			order.getProducts().stream().forEach((p) -> {
-				System.out.println(p.getName() + "  " + p.getValue());
+				String extraName = p instanceof Coffee
+						? ((Coffee) p).getExtra() != null ? Util.EXTRA_SPLIT + ((Coffee) p).getExtra().getName()
+								: Util.EMPTY
+						: Util.EMPTY;
+				response.append(
+						p.getName() + Util.SPACE + extraName + Util.CUSTOMER_SPLIT + p.getValue() + Util.LINE_BREAK);
+
 			});
-			System.out.println("total products    " + order.getTotalProducts());
-			System.out.println("total discount    " + order.getTotalDiscounts());
-			System.out.println("total to pay      " + order.calculateTotalOrder());
-			System.out.println("**********************************************");
+			response.append(Util.TOTAL_PRODUCTS + order.getTotalProducts() + Util.LINE_BREAK);
+			response.append(Util.TOTAL_DISCOUNT + order.getTotalDiscounts() + Util.LINE_BREAK);
+			response.append(Util.TOTAL_TO_PAY + order.calculateTotalOrder() + Util.LINE_BREAK);
+			response.append(Util.LINE_BREAK);
+			response.append(Util.ORDER_SEPARATOR);
+
+			System.out.println(response.toString());
 		} else {
 			System.out.println(Util.BAD_REQUEST);
 		}
